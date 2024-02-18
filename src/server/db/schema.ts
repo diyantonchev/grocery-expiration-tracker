@@ -16,14 +16,15 @@ export const groceries = createTable(
   'groceries',
   {
     id: bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
-    userId: bigint('user_id', { mode: 'number' }).notNull(),
+    userId: varchar('user_id', { length: 36 }).notNull(),
     productName: varchar('product_name', { length: 256 }).notNull(),
     expirationDate: date('expiration_date').notNull(),
-    manufacturer: varchar('manufacturer', { length: 256 }),
+    brand: varchar('brand', { length: 256 }),
     quantity: int('quantity')
       .default(sql`1`)
       .notNull(),
     category: varchar('category', { length: 256 }),
+    unit: varchar('unit', { length: 50 }),
   },
   (groceries) => ({
     userIndex: index('user_idx').on(groceries.userId),
