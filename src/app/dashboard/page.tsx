@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { auth } from '@clerk/nextjs/server';
 import { UserButton } from '@clerk/nextjs';
+import dayjs from 'dayjs';
 
+import { getGroceries } from '~/server/data/groceries';
 import { Button } from '~/components/ui/button';
 import {
   CardTitle,
@@ -21,7 +24,10 @@ import {
   ChevronRightIcon,
 } from '~/components/icons';
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const { userId } = auth();
+  const groceries = await getGroceries();
+
   return (
     <div className="flex min-h-screen w-full">
       <div className="hidden border-r bg-gray-100/40 dark:bg-gray-800/40 lg:block">
@@ -81,7 +87,7 @@ export default function Dashboard() {
               </div>
             </form>
           </div>
-          <UserButton />
+          {userId && <UserButton afterSignOutUrl="/" />}
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-4">
           <div className="flex items-center">
@@ -93,94 +99,35 @@ export default function Dashboard() {
             </Button>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="flex flex-col">
-                  <CardTitle className="text-sm font-medium">
-                    Milk Carton
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Best before 15th March 2023
-                  </CardDescription>
-                </div>
-                <ChevronRightIcon className="h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <Image
-                  alt="Milk"
-                  className="m-auto h-24 w-24"
-                  height={64}
-                  width={64}
-                  src="/placeholder.jpg"
-                />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="flex flex-col">
-                  <CardTitle className="text-sm font-medium">
-                    Bread Loaf
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Best before 20th March 2023
-                  </CardDescription>
-                </div>
-                <ChevronRightIcon className="h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <Image
-                  alt="Bread"
-                  className="m-auto h-24 w-24"
-                  width={64}
-                  height={64}
-                  src="/placeholder.jpg"
-                />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="flex flex-col">
-                  <CardTitle className="text-sm font-medium">
-                    Apples (1kg)
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Best before 10th March 2023
-                  </CardDescription>
-                </div>
-                <ChevronRightIcon className="h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <Image
-                  alt="Apples"
-                  className="m-auto h-24 w-24"
-                  width={64}
-                  height={64}
-                  src="/placeholder.jpg"
-                />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="flex flex-col">
-                  <CardTitle className="text-sm font-medium">
-                    Yoghurt Cups (6 pack)
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Best before 25th March 2023
-                  </CardDescription>
-                </div>
-                <ChevronRightIcon className="h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <Image
-                  alt="Yoghurt"
-                  className="m-auto h-24 w-24"
-                  src="/placeholder.jpg"
-                  width={64}
-                  height={64}
-                />
-              </CardContent>
-            </Card>
+            {groceries.map((grocery) => (
+              <Card key={grocery.id}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <div className="flex flex-col">
+                    <CardTitle className="text-sm font-medium">
+                      {grocery.productName}{' '}
+                      {grocery.brand && `${grocery.brand}`}
+                    </CardTitle>
+                    <CardDescription className="text-xs">
+                      {grocery.quantity} {grocery.unit && `${grocery.unit}`}
+                    </CardDescription>
+                    <CardDescription className="text-xs">
+                      Best before{' '}
+                      {dayjs(grocery.expirationDate).format('DD.MM.YY')}
+                    </CardDescription>
+                  </div>
+                  <ChevronRightIcon className="h-4 w-4" />
+                </CardHeader>
+                <CardContent>
+                  <Image
+                    alt={grocery.productName}
+                    className="m-auto h-24 w-24"
+                    height={64}
+                    width={64}
+                    src="/placeholder.jpg"
+                  />
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </main>
       </div>
