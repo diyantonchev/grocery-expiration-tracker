@@ -26,7 +26,7 @@ import {
 
 export default async function Dashboard() {
   const { userId } = auth();
-  const groceries = await getGroceries();
+  const groceries = userId ? await getGroceries(userId) : [];
 
   return (
     <div className="flex min-h-screen w-full">
