@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { UserButton } from '@clerk/nextjs';
 import dayjs from 'dayjs';
@@ -26,7 +27,12 @@ import {
 
 export default async function Dashboard() {
   const { userId } = auth();
-  const groceries = userId ? await getGroceries(userId) : [];
+
+  if (!userId) {
+    redirect('/');
+  }
+
+  const groceries = await getGroceries(userId);
 
   return (
     <div className="flex min-h-screen w-full">
@@ -87,7 +93,7 @@ export default async function Dashboard() {
               </div>
             </form>
           </div>
-          {userId && <UserButton afterSignOutUrl="/" />}
+          <UserButton afterSignOutUrl="/" />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-4">
           <div className="flex items-center">
