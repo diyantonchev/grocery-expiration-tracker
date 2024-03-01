@@ -1,14 +1,12 @@
 'use client';
 
-import {
-  useState,
-  useEffect,
-  useRef,
-  type ReactNode,
-  type ElementRef,
-} from 'react';
+import { useRef, useState, type ReactNode, type ElementRef } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import toast from 'react-hot-toast';
+import { type z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import dayjs from 'dayjs';
+import { CalendarIcon } from 'lucide-react';
 
 import {
   Dialog,
@@ -20,55 +18,73 @@ import {
   DialogTrigger,
   DialogClose,
 } from '~/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '~/components/ui/form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
-import { DatePicker } from '~/components/ui/date-picker';
-import { addProduct } from '~/app/dashboard/actions';
+import { Calendar } from '~/components/ui/calendar';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '~/components/ui/popover';
+import { addProduct } from '~/app/dashboard/add-product-action';
+import { useToastMessage } from '~/app/dashboard/_hooks/useToastMessage';
+import { useFormReset } from '~/app/dashboard/_hooks/useFormReset';
+import { groceryProductSchema } from '~/app/dashboard/grocery-product-schema';
+import { initialFormState } from '~/app/dashboard/form-state';
+import { cn } from '~/lib/utils';
+
+type FormSchema = z.infer<typeof groceryProductSchema>;
+
+export const initialFormData = {
+  productName: '',
+  expirationDate: undefined,
+  brand: '',
+  quantity: 1,
+  category: '',
+  unit: '',
+};
 
 type AddProductDialogProps = {
   trigger: ReactNode;
 };
 
-const initialFormState = {
-  success: true,
-  message: '',
-};
-
 export default function AddProductDialog({ trigger }: AddProductDialogProps) {
-  const [formState, addProductAction] = useFormState(
-    addProduct,
-    initialFormState,
-  );
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [expirationDate, setExpirationDate] = useState<Date>();
+  const [formState, formAction] = useFormState(addProduct, initialFormState);
+
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(groceryProductSchema),
+    defaultValues: initialFormData,
+  });
+
   const formRef = useRef<ElementRef<'form'>>(null);
 
-  useEffect(() => {
-    if (formState.message === '') return;
+  useToastMessage(formState);
+  useFormReset(formState, () => {
+    form.reset();
+    setIsOpen(false);
+  });
 
-    if (!formState.success) {
-      toast.error(formState.message);
-      return;
-    }
+  const onSubmit = async (data: FormSchema) => {
+    if (!formRef.current) return;
 
-    setExpirationDate(undefined);
-    formRef.current?.reset();
-    toast.success(formState.message);
-  }, [formState]);
+    const formData = new FormData(formRef.current);
+    formData.set('expirationDate', data.expirationDate.toISOString());
 
-  const formAction = (formData: FormData) => {
-    if (!expirationDate) {
-      toast('Please select an expiration date');
-      return;
-    }
-
-    formData.set('expirationDate', expirationDate.toISOString());
-    addProductAction(formData);
+    formAction(formData);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -78,82 +94,145 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
             include its expiration date.
           </DialogDescription>
         </DialogHeader>
-        <form action={formAction} ref={formRef}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="productName" className="text-right">
-                Product Name
-              </Label>
-              <Input
-                id="productName"
-                name="productName"
-                placeholder='E.g. "Bananas"'
-                className="col-span-3"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="brand" className="text-right">
-                Brand
-              </Label>
-              <Input
-                id="brand"
-                name="brand"
-                placeholder='E.g. "Dole"'
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Expiration Date</Label>
-              <DatePicker
-                className="w-[285px] md:w-[342.5px]"
-                date={expirationDate}
-                onSelect={setExpirationDate}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="quantity" className="text-right">
-                Quantity
-              </Label>
-              <Input
-                id="quantity"
-                name="quantity"
-                type="number"
-                placeholder="1"
-                className="col-span-3"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="unit" className="text-right">
-                Unit
-              </Label>
-              <Input
-                id="unit"
-                name="unit"
-                placeholder='E.g. "kg" or "grams"'
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="category" className="text-right">
-                Category
-              </Label>
-              <Input
-                id="category"
-                name="category"
-                placeholder='E.g. "Fruits"'
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <SubmitButton />
-          </DialogFooter>
-        </form>
+        <Form {...form}>
+          <form
+            // action={formAction}
+            onSubmit={form.handleSubmit(onSubmit)}
+            ref={formRef}
+            className="space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="productName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="productName">Product Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="productName"
+                      placeholder='E.g. "Bananas"'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="brand"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="brand">Brand</FormLabel>
+                  <FormControl>
+                    <Input id="brand" placeholder='E.g. "Dole"' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="expirationDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel htmlFor="expirationDate">
+                    Expiration Date
+                  </FormLabel>
+                  <FormControl>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              'col font-normal',
+                              !field.value && 'text-muted-foreground',
+                            )}
+                          >
+                            {field.value ? (
+                              dayjs(field.value).format('D MMMM, YYYY')
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="quantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="quantity">Quantity</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="quantity"
+                      type="number"
+                      placeholder="E.g. 1"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="unit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="unit">Unit</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="unit"
+                      placeholder='E.g. "kg" or "grams"'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="category">Category</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="category"
+                      placeholder='E.g. "Fruits"'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <SubmitButton />
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
@@ -163,7 +242,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" aria-disabled={pending}>
+    <Button type="submit" className="sm:mb-2" aria-disabled={pending}>
       Add Product
     </Button>
   );
