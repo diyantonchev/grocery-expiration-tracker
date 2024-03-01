@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { UserButton } from '@clerk/nextjs';
+import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
 
 import { getGroceries } from '~/server/data/groceries';
@@ -24,6 +25,7 @@ import {
   SearchIcon,
   ChevronRightIcon,
 } from '~/components/icons';
+import AddProductDialog from '~/app/dashboard/_components/add-product-dialog';
 
 export default async function Dashboard() {
   const { userId } = auth();
@@ -35,7 +37,7 @@ export default async function Dashboard() {
   const groceries = await getGroceries(userId);
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full" id="dashboard">
       <div className="hidden border-r bg-gray-100/40 dark:bg-gray-800/40 lg:block">
         <div className="flex h-full flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4">
@@ -100,9 +102,13 @@ export default async function Dashboard() {
             <h1 className="text-lg font-semibold md:text-2xl">
               Product Expiry
             </h1>
-            <Button className="ml-auto" size="sm">
-              Add product
-            </Button>
+            <AddProductDialog
+              trigger={
+                <Button className="ml-auto" size="sm">
+                  Add product
+                </Button>
+              }
+            />
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {groceries.map((grocery) => (
@@ -137,6 +143,7 @@ export default async function Dashboard() {
           </div>
         </main>
       </div>
+      <Toaster position="bottom-center" />
     </div>
   );
 }
