@@ -176,15 +176,20 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
             <FormField
               control={form.control}
               name="quantity"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel htmlFor="quantity">Quantity</FormLabel>
                   <FormControl>
                     <Input
                       id="quantity"
                       type="number"
-                      placeholder="E.g. 1"
-                      {...field}
+                      step="0.01"
+                      placeholder="E.g. 0.5"
+                      {...form.register('quantity', {
+                        setValueAs: (value) => Number(value) ?? 0,
+                        validate: (value) =>
+                          /^\d*(\.\d+)?$/.test(value.toString()),
+                      })}
                     />
                   </FormControl>
                   <FormMessage />

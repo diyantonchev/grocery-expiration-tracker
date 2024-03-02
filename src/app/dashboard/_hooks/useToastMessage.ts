@@ -9,14 +9,17 @@ const useToastMessage = (formState: FormState) => {
   const showToast =
     formState.message && formState.timestamp !== prevTimestamp.current;
 
-  useEffect(() => {
-    if (!showToast) return;
+  useEffect(
+    function toastMessage() {
+      if (!showToast) return;
 
-    const toastFn = formState.success ? toast.success : toast.error;
+      const toastFn = formState.success ? toast.success : toast.error;
 
-    toastFn(formState.message);
-    prevTimestamp.current = formState.timestamp;
-  }, [formState.success, formState.message, formState.timestamp, showToast]);
+      toastFn(formState.message);
+      prevTimestamp.current = formState.timestamp;
+    },
+    [formState.success, formState.message, formState.timestamp, showToast],
+  );
 };
 
 export { useToastMessage };

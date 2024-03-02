@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import {
   bigint,
-  int,
+  float,
   date,
   index,
   mysqlTableCreator,
@@ -17,13 +17,13 @@ export const groceries = createTable(
   {
     id: bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
     userId: varchar('user_id', { length: 36 }).notNull(),
-    productName: varchar('product_name', { length: 256 }).notNull(),
+    productName: varchar('product_name', { length: 150 }).notNull(),
     expirationDate: date('expiration_date').notNull(),
-    brand: varchar('brand', { length: 256 }),
-    quantity: int('quantity')
+    brand: varchar('brand', { length: 150 }),
+    quantity: float('quantity')
       .default(sql`1`)
       .notNull(),
-    category: varchar('category', { length: 256 }),
+    category: varchar('category', { length: 150 }),
     unit: varchar('unit', { length: 50 }),
   },
   (groceries) => ({
