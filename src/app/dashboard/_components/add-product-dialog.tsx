@@ -140,7 +140,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
                     Expiration Date
                   </FormLabel>
                   <FormControl>
-                    <Popover>
+                    <Popover modal>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
@@ -242,7 +242,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" className="sm:mb-2" aria-disabled={pending}>
+    <Button type="submit" className="mb-2" aria-disabled={pending}>
       Add Product
     </Button>
   );
