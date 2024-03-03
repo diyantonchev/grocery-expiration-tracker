@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const groceryProductSchema = z.object({
+export const groceryFormSchema = z.object({
   productName: z
     .string({ required_error: 'Please enter a product name' })
     .trim()
@@ -25,3 +25,5 @@ export const groceryProductSchema = z.object({
   category: z.string().trim().max(150, 'The category is too long').optional(),
   unit: z.string().trim().max(50, 'The unit is too long').optional(),
 });
+
+export type GroceryFormData = z.infer<typeof groceryFormSchema>;

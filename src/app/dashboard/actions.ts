@@ -6,10 +6,10 @@ import { ZodError } from 'zod';
 import { db } from '~/server/db';
 import { groceries } from '~/server/db/schema';
 import { revalidatePath } from 'next/cache';
-import { groceryProductSchema } from '~/app/dashboard/grocery-product-schema';
+import { groceryFormSchema } from '~/app/dashboard/grocery-form-schema';
 import { type FormState } from '~/app/dashboard/common-types';
 
-export async function addProduct(formState: FormState, formData: FormData) {
+export async function addGrocery(formState: FormState, formData: FormData) {
   const { userId } = auth();
   if (!userId) {
     return {
@@ -22,7 +22,7 @@ export async function addProduct(formState: FormState, formData: FormData) {
   const rawFormData = Object.fromEntries(formData);
 
   try {
-    const validatedData = groceryProductSchema.parse({
+    const validatedData = groceryFormSchema.parse({
       ...rawFormData,
       expirationDate: new Date(formData.get('expirationDate') as string),
     });
