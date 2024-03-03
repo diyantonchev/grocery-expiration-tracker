@@ -5,13 +5,10 @@ import { type ColumnDef } from '@tanstack/react-table';
 
 import { Badge } from '~/components/ui/badge';
 import { Checkbox } from '~/components/ui/checkbox';
-import { type getGroceries } from '~/server/data/groceries';
 
-import { DataTableColumnHeader } from './data-table-column-header';
-import { DataTableRowActions } from './data-table-row-actions';
-
-type Groceries = Awaited<ReturnType<typeof getGroceries>>;
-type Grocery = Groceries[number];
+import { DataTableColumnHeader } from '~/components/ui/data-table/data-table-column-header';
+import { DataTableRowActions } from '~/components/ui/data-table/data-table-row-actions';
+import { type Grocery } from '~/app/dashboard/common-types';
 
 export const columns: ColumnDef<Grocery>[] = [
   {

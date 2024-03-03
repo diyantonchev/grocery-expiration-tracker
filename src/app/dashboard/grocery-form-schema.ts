@@ -26,4 +26,4 @@ export const groceryFormSchema = z.object({
   unit: z.string().trim().max(50, 'The unit is too long').optional(),
 });
 
-export type Grocery = z.infer<typeof groceryFormSchema>;
+export type GroceryFormData = z.infer<typeof groceryFormSchema>;

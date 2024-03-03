@@ -38,7 +38,7 @@ import { useToastMessage } from '~/app/dashboard/_hooks/useToastMessage';
 import { useFormReset } from '~/app/dashboard/_hooks/useFormReset';
 import {
   groceryFormSchema,
-  type Grocery,
+  type GroceryFormData,
 } from '~/app/dashboard/grocery-form-schema';
 import { cn } from '~/lib/utils';
 
@@ -66,7 +66,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
 
   const [formState, formAction] = useFormState(addGrocery, initialFormState);
 
-  const form = useForm<Grocery>({
+  const form = useForm<GroceryFormData>({
     resolver: zodResolver(groceryFormSchema),
     defaultValues: initialFormData,
   });
@@ -79,7 +79,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
     setIsOpen(false);
   });
 
-  const onSubmit = async (data: Grocery) => {
+  const onSubmit = async (data: GroceryFormData) => {
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
