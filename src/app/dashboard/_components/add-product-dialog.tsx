@@ -2,7 +2,6 @@
 
 import { useRef, useState, type ReactNode, type ElementRef } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { type z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
@@ -34,13 +33,14 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '~/components/ui/popover';
-import { addProduct } from '~/app/dashboard/actions';
+import { addGrocery } from '~/app/dashboard/actions';
 import { useToastMessage } from '~/app/dashboard/_hooks/useToastMessage';
 import { useFormReset } from '~/app/dashboard/_hooks/useFormReset';
-import { groceryProductSchema } from '~/app/dashboard/grocery-product-schema';
+import {
+  groceryFormSchema,
+  type Grocery,
+} from '~/app/dashboard/grocery-form-schema';
 import { cn } from '~/lib/utils';
-
-type FormSchema = z.infer<typeof groceryProductSchema>;
 
 export const initialFormData = {
   productName: '',
@@ -64,10 +64,10 @@ type AddProductDialogProps = {
 export default function AddProductDialog({ trigger }: AddProductDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [formState, formAction] = useFormState(addProduct, initialFormState);
+  const [formState, formAction] = useFormState(addGrocery, initialFormState);
 
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(groceryProductSchema),
+  const form = useForm<Grocery>({
+    resolver: zodResolver(groceryFormSchema),
     defaultValues: initialFormData,
   });
 
@@ -79,7 +79,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
     setIsOpen(false);
   });
 
-  const onSubmit = async (data: FormSchema) => {
+  const onSubmit = async (data: Grocery) => {
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);

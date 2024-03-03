@@ -1,3 +1,4 @@
+import { type Metadata } from 'next';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 
@@ -10,9 +11,14 @@ import {
   CardContent,
   Card,
 } from '~/components/ui/card';
-import { ChevronRightIcon } from '~/components/icons';
+import { ChevronRightIcon } from '@radix-ui/react-icons';
 import AddProductDialog from '~/app/dashboard/_components/add-product-dialog';
 import { useUserId } from '~/app/dashboard/_hooks/useUserId';
+
+export const metadata: Metadata = {
+  title: 'Grocery Cards',
+  description: 'A list of groceries to track',
+};
 
 export default async function DashboardHome() {
   const userId = useUserId();
