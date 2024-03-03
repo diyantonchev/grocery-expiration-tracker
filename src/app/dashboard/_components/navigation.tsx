@@ -9,7 +9,6 @@ import { TableIcon, HomeIcon } from '@radix-ui/react-icons';
 
 export default function Sidebar() {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <div className="flex-1 overflow-auto py-2">
