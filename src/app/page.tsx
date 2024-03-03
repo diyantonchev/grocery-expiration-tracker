@@ -32,7 +32,7 @@ const words = [
   },
 ];
 
-export default function HomePage() {
+export default function Page() {
   return (
     <main className="flex h-screen flex-col items-center justify-center space-y-4 px-4 text-center md:px-6">
       <div className="space-y-2">

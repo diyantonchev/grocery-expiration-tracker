@@ -34,11 +34,10 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '~/components/ui/popover';
-import { addProduct } from '~/app/dashboard/add-product-action';
+import { addProduct } from '~/app/dashboard/actions';
 import { useToastMessage } from '~/app/dashboard/_hooks/useToastMessage';
 import { useFormReset } from '~/app/dashboard/_hooks/useFormReset';
 import { groceryProductSchema } from '~/app/dashboard/grocery-product-schema';
-import { initialFormState } from '~/app/dashboard/form-state';
 import { cn } from '~/lib/utils';
 
 type FormSchema = z.infer<typeof groceryProductSchema>;
@@ -50,6 +49,12 @@ export const initialFormData = {
   quantity: 1,
   category: '',
   unit: '',
+};
+
+const initialFormState = {
+  success: true,
+  message: '',
+  timestamp: Date.now(),
 };
 
 type AddProductDialogProps = {

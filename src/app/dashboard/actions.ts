@@ -7,7 +7,7 @@ import { db } from '~/server/db';
 import { groceries } from '~/server/db/schema';
 import { revalidatePath } from 'next/cache';
 import { groceryProductSchema } from '~/app/dashboard/grocery-product-schema';
-import { type FormState } from '~/app/dashboard/form-state';
+import { type FormState } from '~/app/dashboard/common-types';
 
 export async function addProduct(formState: FormState, formData: FormData) {
   const { userId } = auth();

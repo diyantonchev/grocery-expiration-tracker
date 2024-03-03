@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 
-import { type FormState } from '~/app/dashboard/form-state';
+import { type FormState } from '~/app/dashboard/common-types';
 
-const useToastMessage = (formState: FormState) => {
+export function useToastMessage(formState: FormState) {
   const prevTimestamp = useRef(formState.timestamp);
 
   const showToast =
@@ -20,6 +20,4 @@ const useToastMessage = (formState: FormState) => {
     },
     [formState.success, formState.message, formState.timestamp, showToast],
   );
-};
-
-export { useToastMessage };
+}

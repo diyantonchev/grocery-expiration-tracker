@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { type FormState } from '~/app/dashboard/form-state';
+import { type FormState } from '~/app/dashboard/common-types';
 
-const useFormReset = (formState: FormState, resetFn: () => void) => {
+export function useFormReset(formState: FormState, resetFn: () => void) {
   const prevTimestamp = useRef(formState.timestamp);
 
   useEffect(
@@ -13,6 +13,4 @@ const useFormReset = (formState: FormState, resetFn: () => void) => {
     },
     [formState.success, formState.timestamp, resetFn],
   );
-};
-
-export { useFormReset };
+}
