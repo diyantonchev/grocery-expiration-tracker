@@ -8,3 +8,9 @@ export const getGroceries = cache(async (userId: string) => {
     where: (groceries, { eq }) => eq(groceries.userId, userId),
   });
 });
+
+export const getGrocery = cache(async (groceryId: number) => {
+  return await db.query.groceries.findFirst({
+    where: (grocery, { eq }) => eq(grocery.id, groceryId),
+  });
+});
