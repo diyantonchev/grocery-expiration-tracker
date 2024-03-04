@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { type FormState } from '~/app/dashboard/common-types';
+import { type FormState } from '~/app/groceries/common-types';
 
 export function useFormReset(formState: FormState, resetFn: () => void) {
   const prevTimestamp = useRef(formState.timestamp);

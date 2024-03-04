@@ -1,14 +1,14 @@
 import { Toaster } from 'react-hot-toast';
-import Header from '~/app/dashboard/_components/header';
-import Sidebar from '~/app/dashboard/_components/sidebar';
+import Header from '~/app/groceries/_components/header';
+import Sidebar from '~/app/groceries/_components/sidebar';
 
-export default function DashboardLayout({
+export default function GroceriesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full" id="dashboard">
+    <div className="flex min-h-screen w-full" id="groceries">
       <Sidebar />
       <div className="flex w-full flex-col">
         <Header />

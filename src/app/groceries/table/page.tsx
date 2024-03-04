@@ -1,17 +1,17 @@
 import { type Metadata } from 'next';
 
 import { getGroceries } from '~/server/data/groceries';
-import { useUserId } from '~/app/dashboard/_hooks/useUserId';
+import { useUserId } from '~/app/groceries/_hooks/useUserId';
 
 import { DataTable } from '~/components/ui/data-table/data-table';
-import { columns } from '~/app/dashboard/table/components/columns';
+import { columns } from '~/app/groceries/table/components/columns';
 
 export const metadata: Metadata = {
-  title: 'Grocery List',
-  description: 'A list of groceries to track',
+  title: 'Grocery Table',
+  description: 'A table of groceries to track',
 };
 
-export default async function TableView() {
+export default async function GroceriesTableView() {
   const userId = useUserId();
   const groceries = await getGroceries(userId);
 
@@ -34,15 +34,13 @@ export default async function TableView() {
   );
 
   return (
-    <>
-      <div className="h-full flex-col space-y-8 p-8 md:flex">
-        <DataTable
-          data={groceries}
-          columns={columns}
-          search={{ column: 'productName', placeholder: 'Filter groceries...' }}
-          filterColumnsData={filterColumnsData}
-        />
-      </div>
-    </>
+    <div className="h-full flex-col space-y-8 p-8 md:flex">
+      <DataTable
+        data={groceries}
+        columns={columns}
+        search={{ column: 'productName', placeholder: 'Filter groceries...' }}
+        filterColumnsData={filterColumnsData}
+      />
+    </div>
   );
 }

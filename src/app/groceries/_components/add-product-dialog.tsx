@@ -33,13 +33,13 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '~/components/ui/popover';
-import { addGrocery } from '~/app/dashboard/actions';
-import { useToastMessage } from '~/app/dashboard/_hooks/useToastMessage';
-import { useFormReset } from '~/app/dashboard/_hooks/useFormReset';
+import { addGrocery } from '~/app/groceries/actions';
+import { useToastMessage } from '~/app/groceries/_hooks/useToastMessage';
+import { useFormReset } from '~/app/groceries/_hooks/useFormReset';
 import {
   groceryFormSchema,
   type GroceryFormData,
-} from '~/app/dashboard/grocery-form-schema';
+} from '~/app/groceries/grocery-form-schema';
 import { cn } from '~/lib/utils';
 
 export const initialFormData = {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { DashboardIcon, BellIcon } from '@radix-ui/react-icons';
+import { CounterClockwiseClockIcon, BellIcon } from '@radix-ui/react-icons';
 
 import { Button } from '~/components/ui/button';
 import Navigation from './navigation';
@@ -11,10 +11,10 @@ export default function Sidebar() {
         <div className="flex h-14 items-center border-b px-4">
           <Link
             className="flex items-center gap-3 font-semibold"
-            href="/dashboard"
+            href="/groceries"
           >
-            <DashboardIcon className="h-6 w-6" />
-            <span className="">Dashboard</span>
+            <CounterClockwiseClockIcon className="h-6 w-6" />
+            <span className="">Tracker</span>
           </Link>
           <Button className="ml-4 h-8 w-8" size="icon" variant="outline">
             <BellIcon className="h-4 w-4" />

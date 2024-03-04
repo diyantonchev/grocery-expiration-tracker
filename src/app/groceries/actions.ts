@@ -6,8 +6,8 @@ import { ZodError } from 'zod';
 import { db } from '~/server/db';
 import { groceries } from '~/server/db/schema';
 import { revalidatePath } from 'next/cache';
-import { groceryFormSchema } from '~/app/dashboard/grocery-form-schema';
-import { type FormState } from '~/app/dashboard/common-types';
+import { groceryFormSchema } from '~/app/groceries/grocery-form-schema';
+import { type FormState } from '~/app/groceries/common-types';
 
 export async function addGrocery(formState: FormState, formData: FormData) {
   const { userId } = auth();
@@ -32,7 +32,7 @@ export async function addGrocery(formState: FormState, formData: FormData) {
     return errorToFormState(error);
   }
 
-  revalidatePath('/dashboard');
+  revalidatePath('/groceries');
 
   return {
     success: true,

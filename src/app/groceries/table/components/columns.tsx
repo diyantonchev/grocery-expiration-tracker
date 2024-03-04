@@ -8,7 +8,7 @@ import { Checkbox } from '~/components/ui/checkbox';
 
 import { DataTableColumnHeader } from '~/components/ui/data-table/data-table-column-header';
 import { DataTableRowActions } from '~/components/ui/data-table/data-table-row-actions';
-import { type Grocery } from '~/app/dashboard/common-types';
+import { type Grocery } from '~/app/groceries/common-types';
 
 export const columns: ColumnDef<Grocery>[] = [
   {
