@@ -14,3 +14,13 @@ export const getGrocery = cache(async (groceryId: number) => {
     where: (grocery, { eq }) => eq(grocery.id, groceryId),
   });
 });
+
+export const getExpiredGroceries = cache(async (userId: string) => {
+  return await db.query.groceries.findMany({
+    where: (groceries, { eq, lt }) => {
+      return (
+        eq(groceries.userId, userId) && lt(groceries.expirationDate, new Date())
+      );
+    },
+  });
+});

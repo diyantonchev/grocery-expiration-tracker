@@ -34,7 +34,7 @@ export default async function GroceriesHome() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {groceries.map((grocery) => (
           <Link key={grocery.id} href={`/groceries/${grocery.id}`}>
-            <Card>
+            <Card className="transition-[colors, shadow] shadow-md duration-200 hover:border-gray-900 hover:shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="flex flex-col">
                   <CardTitle className="text-sm font-medium">
@@ -53,9 +53,9 @@ export default async function GroceriesHome() {
               <CardContent>
                 <Image
                   alt={grocery.productName}
-                  className="m-auto h-24 w-24"
-                  height={64}
-                  width={64}
+                  className="m-auto h-40 w-40 rounded-lg"
+                  height={160}
+                  width={160}
                   src="/placeholder.jpg"
                 />
               </CardContent>
