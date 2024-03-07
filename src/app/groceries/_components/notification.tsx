@@ -13,6 +13,7 @@ import { useUserId } from '~/app/groceries/_hooks/useUserId';
 export default async function Notification() {
   const userId = useUserId();
   const expiredGroceries = await getExpiredGroceries(userId);
+  const expiredGroceriesCount = expiredGroceries.length;
 
   return (
     <Popover>
@@ -20,14 +21,14 @@ export default async function Notification() {
         <Button className="relative ml-4 h-8 w-8" size="icon" variant="outline">
           <BellIcon className="h-4 w-4" />
           <span className="sr-only">Toggle notifications</span>
-          {expiredGroceries.length > 0 && (
+          {expiredGroceriesCount > 0 && (
             <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-400 text-xs text-white">
-              {expiredGroceries.length}
+              {expiredGroceriesCount}
             </span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="ml-2 w-auto">
+      <PopoverContent className="ml-2 flex w-auto flex-col gap-2">
         {expiredGroceries.map((grocery) => (
           <Link
             key={grocery.id}
