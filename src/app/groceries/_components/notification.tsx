@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BellIcon } from '@radix-ui/react-icons';
+import dayjs from 'dayjs';
 
 import {
   Popover,
@@ -22,22 +23,29 @@ export default async function Notification() {
           <BellIcon className="h-4 w-4" />
           <span className="sr-only">Toggle notifications</span>
           {expiredGroceriesCount > 0 && (
-            <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-400 text-xs text-white">
+            <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
               {expiredGroceriesCount}
             </span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="ml-2 flex w-auto flex-col gap-2">
-        {expiredGroceries.map((grocery) => (
-          <Link
-            key={grocery.id}
-            className="text-red-400"
-            href={`/groceries/${grocery.id}`}
-          >
-            {`${grocery.productName} ${grocery.brand}`} is expired
-          </Link>
-        ))}
+      <PopoverContent className="ml-2 w-auto p-2">
+        <div className="grid gap-1">
+          {expiredGroceries.map((grocery) => (
+            <Link key={grocery.id} href={`/groceries/${grocery.id}`}>
+              <div className="grid grid-cols-[25px_1fr] items-start rounded-md p-2 transition-colors hover:bg-gray-100">
+                <span className="flex h-2 w-2 translate-y-1.5 rounded-full bg-red-500" />
+                <div className="grid gap-1">
+                  <p className="text-sm font-medium">{`${grocery.productName} ${grocery.brand}`}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Expired on{' '}
+                    {dayjs(grocery.expirationDate).format('dddd DD MMMM YY')}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </PopoverContent>
     </Popover>
   );

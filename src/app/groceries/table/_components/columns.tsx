@@ -80,7 +80,7 @@ export const columns: ColumnDef<Grocery>[] = [
       const isExpired = dayjs(row.getValue('expirationDate')).isBefore(dayjs());
       return (
         <div
-          className={cn('flex items-center', isExpired ? 'text-red-400' : '')}
+          className={cn('flex items-center', isExpired ? 'text-red-500' : '')}
         >
           {dayjs(row.getValue('expirationDate')).format('dddd DD MMMM YY')}
         </div>
