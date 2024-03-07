@@ -1,11 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import dayjs from 'dayjs';
 import { type ColumnDef } from '@tanstack/react-table';
 
+import { cn } from '~/lib/utils';
 import { Badge } from '~/components/ui/badge';
 import { Checkbox } from '~/components/ui/checkbox';
-
 import { DataTableColumnHeader } from '~/components/ui/data-table/data-table-column-header';
 import { DataTableRowActions } from '~/components/ui/data-table/data-table-row-actions';
 import { type Grocery } from '~/app/groceries/common-types';
@@ -43,7 +44,12 @@ export const columns: ColumnDef<Grocery>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex max-w-[500px] items-center truncate font-medium">
-          {row.renderValue('productName')}
+          <Link
+            href={`/groceries/${row.original.id}`}
+            className="transition-colors duration-200 hover:text-gray-500"
+          >
+            {row.renderValue('productName')}
+          </Link>
         </div>
       );
     },
@@ -71,8 +77,11 @@ export const columns: ColumnDef<Grocery>[] = [
       <DataTableColumnHeader column={column} title="Expiration Date" />
     ),
     cell: ({ row }) => {
+      const isExpired = dayjs(row.getValue('expirationDate')).isBefore(dayjs());
       return (
-        <div className="flex items-center">
+        <div
+          className={cn('flex items-center', isExpired ? 'text-red-400' : '')}
+        >
           {dayjs(row.getValue('expirationDate')).format('dddd DD MMMM YY')}
         </div>
       );

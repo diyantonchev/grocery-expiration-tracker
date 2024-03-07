@@ -32,6 +32,8 @@ export function DataTableRowActions<
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem>View</DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem>Edit</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

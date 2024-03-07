@@ -4,7 +4,7 @@ import { getGroceries } from '~/server/data/groceries';
 import { useUserId } from '~/app/groceries/_hooks/useUserId';
 
 import { DataTable } from '~/components/ui/data-table/data-table';
-import { columns } from '~/app/groceries/table/components/columns';
+import { columns } from '~/app/groceries/table/_components/columns';
 
 export const metadata: Metadata = {
   title: 'Grocery Table',
