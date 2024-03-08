@@ -30,6 +30,8 @@ export default async function Notification() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="ml-2 w-auto p-2">
+        {expiredGroceriesCount === 0 && <span>No new notifications</span>}
+
         <div className="grid gap-1">
           {expiredGroceries.map((grocery) => (
             <Link key={grocery.id} href={`/groceries/${grocery.id}`}>

@@ -1,6 +1,7 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
+import { eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
 import { db } from '~/server/db';
@@ -37,6 +38,26 @@ export async function addGrocery(formState: FormState, formData: FormData) {
   return {
     success: true,
     message: 'Successfully added a new product',
+    timestamp: Date.now(),
+  };
+}
+
+export async function deleteGrocery(formState: FormState, groceryId: number) {
+  try {
+    const { rowsAffected } = await db
+      .delete(groceries)
+      .where(eq(groceries.id, groceryId));
+
+    if (rowsAffected === 0) {
+      throw new Error('Grocery not found');
+    }
+  } catch (error) {
+    return errorToFormState(error);
+  }
+
+  return {
+    success: true,
+    message: 'Successfully deleted the product',
     timestamp: Date.now(),
   };
 }

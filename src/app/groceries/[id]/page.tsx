@@ -6,6 +6,7 @@ import { getGrocery } from '~/server/data/groceries';
 import { CardBody, CardContainer, CardItem } from '~/components/ui/3d-card';
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
+import { GroceryDeleteButton } from './_components/grocery-delete-button';
 
 export const metadata: Metadata = {
   title: 'Grocery Page',
@@ -71,7 +72,9 @@ export default async function GroceryPage({ params }: GroceryPageProps) {
             </Button>
           </CardItem>
           <CardItem translateZ={20}>
-            <Button variant="destructive">Delete</Button>
+            <form>
+              <GroceryDeleteButton groceryId={grocery.id} />
+            </form>
           </CardItem>
         </div>
       </CardBody>

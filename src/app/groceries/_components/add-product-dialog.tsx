@@ -79,7 +79,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
     setIsOpen(false);
   });
 
-  const onSubmit = async (data: GroceryFormData) => {
+  const onSubmit = (data: GroceryFormData) => {
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);

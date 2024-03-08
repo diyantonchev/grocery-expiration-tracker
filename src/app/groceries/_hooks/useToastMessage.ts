@@ -3,7 +3,10 @@ import toast from 'react-hot-toast';
 
 import { type FormState } from '~/app/groceries/common-types';
 
-export function useToastMessage(formState: FormState) {
+export function useToastMessage(
+  formState: FormState,
+  successCb?: () => unknown,
+) {
   const prevTimestamp = useRef(formState.timestamp);
 
   const showToast =
@@ -13,11 +16,21 @@ export function useToastMessage(formState: FormState) {
     function toastMessage() {
       if (!showToast) return;
 
-      const toastFn = formState.success ? toast.success : toast.error;
+      if (formState.success) {
+        toast.success(formState.message);
+        successCb?.();
+      } else {
+        toast.error(formState.message);
+      }
 
-      toastFn(formState.message);
       prevTimestamp.current = formState.timestamp;
     },
-    [formState.success, formState.message, formState.timestamp, showToast],
+    [
+      formState.success,
+      formState.message,
+      formState.timestamp,
+      showToast,
+      successCb,
+    ],
   );
 }
