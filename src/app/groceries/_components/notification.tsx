@@ -30,24 +30,26 @@ export default async function Notification() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="ml-2 w-auto p-2">
-        {expiredGroceriesCount === 0 && <span>No new notifications</span>}
-
-        <div className="grid gap-1">
-          {expiredGroceries.map((grocery) => (
-            <Link key={grocery.id} href={`/groceries/${grocery.id}`}>
-              <div className="grid grid-cols-[25px_1fr] items-start rounded-md p-2 transition-colors hover:bg-gray-100">
-                <span className="flex h-2 w-2 translate-y-1.5 rounded-full bg-red-500" />
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium">{`${grocery.productName} ${grocery.brand}`}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Expired on{' '}
-                    {dayjs(grocery.expirationDate).format('dddd DD MMMM YY')}
-                  </p>
+        {expiredGroceriesCount > 0 ? (
+          <div className="grid gap-1">
+            {expiredGroceries.map((grocery) => (
+              <Link key={grocery.id} href={`/groceries/${grocery.id}`}>
+                <div className="grid grid-cols-[25px_1fr] items-start rounded-md p-2 transition-colors hover:bg-gray-100">
+                  <span className="flex h-2 w-2 translate-y-1.5 rounded-full bg-red-500" />
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium">{`${grocery.productName} ${grocery.brand}`}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Expired on{' '}
+                      {dayjs(grocery.expirationDate).format('dddd DD MMMM YY')}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <span>No new notifications</span>
+        )}
       </PopoverContent>
     </Popover>
   );
