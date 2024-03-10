@@ -8,7 +8,7 @@ export default function BurgerMenu() {
       <SheetTrigger asChild>
         <MenuIcon className="block h-6 w-6 md:hidden" />
       </SheetTrigger>
-      <SheetContent side="left">
+      <SheetContent side="left" className="pl-2 pt-4">
         <Navigation />
       </SheetContent>
     </Sheet>
