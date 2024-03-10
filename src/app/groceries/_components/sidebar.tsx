@@ -6,7 +6,7 @@ import Notification from './notification';
 
 export default function Sidebar() {
   return (
-    <div className="hidden border-r bg-gray-100/40 dark:bg-gray-800/40 lg:block">
+    <div className="hidden border-r bg-gray-100/40 dark:bg-gray-800/40 md:block">
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4">
           <Link
