@@ -72,9 +72,7 @@ export default async function GroceryPage({ params }: GroceryPageProps) {
             </Button>
           </CardItem>
           <CardItem translateZ={20}>
-            <form>
-              <GroceryDeleteButton groceryId={grocery.id} />
-            </form>
+            <GroceryDeleteButton groceryId={grocery.id} />
           </CardItem>
         </div>
       </CardBody>
