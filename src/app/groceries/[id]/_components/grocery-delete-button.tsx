@@ -52,6 +52,7 @@ export function GroceryDeleteButton({ groceryId }: GroceryDeleteButtonProps) {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <form>
             <Button
+              className="w-full"
               formAction={() => {
                 formAction(groceryId);
                 setIsAlertOpen(false);
