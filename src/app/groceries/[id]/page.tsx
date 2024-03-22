@@ -12,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb';
 
+import EditProductDialog from '~/app/groceries/_components/edit-product-dialog';
 import { CardBody, CardContainer, CardItem } from '~/components/ui/3d-card';
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
@@ -90,9 +91,14 @@ export default async function GroceryPage({ params }: GroceryPageProps) {
           </CardItem>
           <div className="mt-8 flex items-center justify-end gap-2">
             <CardItem translateZ={20}>
-              <Button className="bg-green-500 px-6 hover:bg-green-500/90 dark:bg-green-900 dark:text-gray-50 dark:hover:bg-green-900/90">
-                Edit
-              </Button>
+              <EditProductDialog
+                grocery={grocery}
+                trigger={
+                  <Button className="bg-green-500 px-6 hover:bg-green-500/90 dark:bg-green-900 dark:text-gray-50 dark:hover:bg-green-900/90">
+                    Edit
+                  </Button>
+                }
+              />
             </CardItem>
             <CardItem translateZ={20}>
               <GroceryDeleteButton groceryId={grocery.id} />

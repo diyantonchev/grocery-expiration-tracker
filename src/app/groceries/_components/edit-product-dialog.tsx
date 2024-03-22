@@ -17,7 +17,7 @@ import {
   DialogClose,
 } from '~/components/ui/dialog';
 import { Button } from '~/components/ui/button';
-import { addGrocery } from '~/app/groceries/actions';
+import { updateGrocery } from '~/app/groceries/actions';
 import { useToastMessage } from '~/app/groceries/_hooks/useToastMessage';
 import { useFormReset } from '~/app/groceries/_hooks/useFormReset';
 import GroceryForm from './grocery-form';
@@ -26,15 +26,7 @@ import {
   groceryFormSchema,
   type GroceryFormData,
 } from '~/app/groceries/grocery-form-schema';
-
-const initialFormData = {
-  productName: '',
-  expirationDate: undefined,
-  brand: '',
-  quantity: 1,
-  category: '',
-  unit: '',
-};
+import { type Grocery } from '~/app/groceries/common-types';
 
 const initialFormState = {
   success: true,
@@ -42,25 +34,38 @@ const initialFormState = {
   timestamp: Date.now(),
 };
 
-type AddProductDialogProps = {
+type EditProductDialogProps = {
   trigger: ReactNode;
+  grocery: Grocery;
 };
 
-export default function AddProductDialog({ trigger }: AddProductDialogProps) {
+export default function EditProductDialog({
+  trigger,
+  grocery,
+}: EditProductDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [formState, formAction] = useFormState(addGrocery, initialFormState);
+  const [formState, formAction] = useFormState(
+    updateGrocery.bind(null, grocery.id),
+    initialFormState,
+  );
 
   const form = useForm<GroceryFormData>({
     resolver: zodResolver(groceryFormSchema),
-    defaultValues: initialFormData,
+    defaultValues: {
+      productName: grocery.productName,
+      expirationDate: grocery.expirationDate,
+      brand: grocery.brand ?? '',
+      quantity: grocery.quantity,
+      category: grocery.category ?? '',
+      unit: grocery.unit ?? '',
+    },
   });
 
   const formRef = useRef<ElementRef<'form'>>(null);
 
   useToastMessage(formState);
   useFormReset(formState, () => {
-    form.reset();
     setIsOpen(false);
   });
 
@@ -78,10 +83,10 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Product</DialogTitle>
+          <DialogTitle>Edit Product</DialogTitle>
           <DialogDescription>
-            Enter the details of the new product you wish to track. Make sure to
-            include its expiration date.
+            Update the details of the product. Make sure to include its
+            expiration date.
           </DialogDescription>
         </DialogHeader>
         <GroceryForm
@@ -93,7 +98,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <FormSubmitButton>Add Product</FormSubmitButton>
+              <FormSubmitButton>Update Product</FormSubmitButton>
             </DialogFooter>
           }
         />

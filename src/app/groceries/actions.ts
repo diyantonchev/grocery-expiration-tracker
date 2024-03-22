@@ -12,6 +12,7 @@ import { type FormState } from '~/app/groceries/common-types';
 
 export async function addGrocery(formState: FormState, formData: FormData) {
   const { userId } = auth();
+
   if (!userId) {
     return {
       success: false,
@@ -38,6 +39,46 @@ export async function addGrocery(formState: FormState, formData: FormData) {
   return {
     success: true,
     message: 'Successfully added a new product',
+    timestamp: Date.now(),
+  };
+}
+
+export async function updateGrocery(
+  groceryId: number,
+  formState: FormState,
+  formData: FormData,
+) {
+  const { userId } = auth();
+
+  if (!userId) {
+    return {
+      success: false,
+      message: 'You must be signed in to perform this action',
+      timestamp: Date.now(),
+    };
+  }
+
+  const rawFormData = Object.fromEntries(formData);
+
+  try {
+    const validatedData = groceryFormSchema.parse({
+      ...rawFormData,
+      expirationDate: new Date(formData.get('expirationDate') as string),
+    });
+
+    await db
+      .update(groceries)
+      .set(validatedData)
+      .where(eq(groceries.id, groceryId));
+  } catch (error) {
+    return errorToFormState(error);
+  }
+
+  revalidatePath(`/groceries/[${groceryId}]/`);
+
+  return {
+    success: true,
+    message: 'Successfully updated the product',
     timestamp: Date.now(),
   };
 }
