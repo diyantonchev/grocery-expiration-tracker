@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { BellIcon } from '@radix-ui/react-icons';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 
 import {
   Popover,
@@ -40,7 +40,7 @@ export default async function Notification() {
                     <p className="text-sm font-medium">{`${grocery.productName} ${grocery.brand}`}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       Expired on{' '}
-                      {dayjs(grocery.expirationDate).format('dddd DD MMMM YY')}
+                      {format(grocery.expirationDate, 'EEEE, dd MMMM yy')}
                     </p>
                   </div>
                 </div>

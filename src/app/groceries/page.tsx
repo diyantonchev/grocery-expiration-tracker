@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 
 import { getGroceries } from '~/server/data/groceries';
 import { Button } from '~/components/ui/button';
@@ -44,8 +44,7 @@ export default async function GroceriesHome() {
                     {grocery.quantity} {grocery.unit && `${grocery.unit}`}
                   </CardDescription>
                   <CardDescription className="text-xs">
-                    Best before{' '}
-                    {dayjs(grocery.expirationDate).format('DD.MM.YY')}
+                    Best before {format(grocery.expirationDate, 'dd.MM.yy')}
                   </CardDescription>
                 </div>
                 <ChevronRightIcon className="h-4 w-4" />

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import dayjs from 'dayjs';
+import { format, isBefore } from 'date-fns';
 import { type ColumnDef } from '@tanstack/react-table';
 
 import { cn } from '~/lib/utils';
@@ -77,12 +77,12 @@ export const columns: ColumnDef<Grocery>[] = [
       <DataTableColumnHeader column={column} title="Expiration Date" />
     ),
     cell: ({ row }) => {
-      const isExpired = dayjs(row.getValue('expirationDate')).isBefore(dayjs());
+      const isExpired = isBefore(row.getValue('expirationDate'), new Date());
       return (
         <div
           className={cn('flex items-center', isExpired ? 'text-red-500' : '')}
         >
-          {dayjs(row.getValue('expirationDate')).format('dddd DD MMMM YY')}
+          {format(row.getValue('expirationDate'), 'EEEE, dd MMMM yy')}
         </div>
       );
     },

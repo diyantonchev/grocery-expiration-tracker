@@ -4,7 +4,7 @@ import { useRef, useState, type ReactNode, type ElementRef } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 
 import {
@@ -156,7 +156,7 @@ export default function AddProductDialog({ trigger }: AddProductDialogProps) {
                             )}
                           >
                             {field.value ? (
-                              dayjs(field.value).format('D MMMM, YYYY')
+                              format(field.value, 'dd MMMM yyyy')
                             ) : (
                               <span>Pick a date</span>
                             )}

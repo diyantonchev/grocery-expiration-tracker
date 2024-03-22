@@ -1,6 +1,6 @@
 import { type Metadata } from 'next';
 import Image from 'next/image';
-import dayjs from 'dayjs';
+import { format, isBefore } from 'date-fns';
 
 import { getGrocery } from '~/server/data/groceries';
 import {
@@ -37,7 +37,7 @@ export default async function GroceryPage({ params }: GroceryPageProps) {
     );
   }
 
-  const isExpired = dayjs(grocery.expirationDate).isBefore(dayjs());
+  const isExpired = isBefore(grocery.expirationDate, new Date());
   const title = `${grocery.productName} ${grocery.brand && grocery.brand}`;
 
   return (
@@ -76,7 +76,7 @@ export default async function GroceryPage({ params }: GroceryPageProps) {
           >
             Best before{' '}
             <span className={cn(isExpired ? 'text-red-500' : '')}>
-              {dayjs(grocery.expirationDate).format('DD.MM.YY')}
+              {format(grocery.expirationDate, 'dd.MM.yy')}
             </span>
           </CardItem>
           <CardItem translateZ="100" className="mt-4 w-full">
