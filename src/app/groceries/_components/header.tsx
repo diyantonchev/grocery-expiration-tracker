@@ -17,6 +17,7 @@ export default function Header() {
           <div className="relative">
             <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
             <Input
+              id="search-groceries"
               className="w-full appearance-none bg-white pl-8 shadow-none dark:bg-gray-950 md:w-2/3 lg:w-1/3"
               placeholder="Search groceries..."
               type="search"
