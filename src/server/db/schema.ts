@@ -1,28 +1,25 @@
-import { sql } from 'drizzle-orm';
 import {
-  bigint,
-  float,
-  date,
+  real,
   index,
-  mysqlTableCreator,
+  pgTableCreator,
+  serial,
+  timestamp,
   varchar,
-} from 'drizzle-orm/mysql-core';
+} from 'drizzle-orm/pg-core';
 
-export const createTable = mysqlTableCreator(
+export const createTable = pgTableCreator(
   (name) => `grocery-expiration-tracker_${name}`,
 );
 
 export const groceries = createTable(
   'groceries',
   {
-    id: bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    id: serial('id').primaryKey(),
     userId: varchar('user_id', { length: 36 }).notNull(),
     productName: varchar('product_name', { length: 150 }).notNull(),
-    expirationDate: date('expiration_date').notNull(),
+    expirationDate: timestamp('expirationDate').notNull(),
     brand: varchar('brand', { length: 150 }),
-    quantity: float('quantity')
-      .default(sql`1`)
-      .notNull(),
+    quantity: real('quantity').default(1.0).notNull(),
     category: varchar('category', { length: 150 }),
     unit: varchar('unit', { length: 50 }),
   },

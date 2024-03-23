@@ -85,11 +85,11 @@ export async function updateGrocery(
 
 export async function deleteGrocery(formState: FormState, groceryId: number) {
   try {
-    const { rowsAffected } = await db
+    const { rowCount } = await db
       .delete(groceries)
       .where(eq(groceries.id, groceryId));
 
-    if (rowsAffected === 0) {
+    if (rowCount === 0) {
       throw new Error('Grocery not found');
     }
   } catch (error) {
