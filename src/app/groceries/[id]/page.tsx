@@ -68,7 +68,7 @@ export default async function GroceryPage({ params }: GroceryPageProps) {
             translateZ="60"
             className="mt-2 max-w-sm text-neutral-500 dark:text-neutral-300"
           >
-            {title}
+            {grocery.quantity} {grocery.unit && `${grocery.unit}`}
           </CardItem>
           <CardItem
             as="p"

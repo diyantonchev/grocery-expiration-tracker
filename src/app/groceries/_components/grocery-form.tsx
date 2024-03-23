@@ -75,12 +75,15 @@ const GroceryForm = forwardRef<HTMLFormElement, GroceryFormProps>(
             name="expirationDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel htmlFor="expirationDate">Expiration Date</FormLabel>
+                <FormLabel htmlFor="expirationDateTrigger">
+                  Expiration Date
+                </FormLabel>
                 <FormControl>
                   <Popover modal>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
+                          id="expirationDateTrigger"
                           variant="outline"
                           className={cn(
                             'col font-normal',
