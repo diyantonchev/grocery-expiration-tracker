@@ -41,7 +41,7 @@ export default function Sidebar() {
             pathname === '/groceries/insights' &&
               'bg-gray-100 text-gray-900 dark:bg-gray-800',
           )}
-          href="#"
+          href="groceries/insights"
         >
           <LineChartIcon className="h-4 w-4" />
           Insights
