@@ -27,7 +27,7 @@ type GroceryPageProps = {
   params: { id: string };
 };
 
-export default async function GroceryPage({ params }: GroceryPageProps) {
+export default async function Page({ params }: GroceryPageProps) {
   const grocery = await getGrocery(Number(params.id));
 
   if (!grocery) {

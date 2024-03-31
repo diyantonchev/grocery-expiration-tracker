@@ -19,7 +19,7 @@ export default async function Notification() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="relative ml-4 h-8 w-8" size="icon" variant="outline">
+        <Button className="relative h-8 w-8" size="icon" variant="outline">
           <BellIcon className="h-4 w-4" />
           <span className="sr-only">Toggle notifications</span>
           {expiredGroceriesCount > 0 && (

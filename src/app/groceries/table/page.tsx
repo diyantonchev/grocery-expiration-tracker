@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'A table of groceries to track',
 };
 
-export default async function GroceriesTableView() {
+export default async function Page() {
   const userId = useUserId();
   const groceries = await getGroceries(userId);
 
