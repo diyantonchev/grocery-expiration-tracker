@@ -11,7 +11,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex-1 overflow-auto py-2">
+    <div className="flex-1 overflow-auto py-4">
       <nav className="grid items-start px-2 text-sm font-medium">
         <Link
           className={cn(
