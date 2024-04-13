@@ -39,7 +39,7 @@ export default async function Notification() {
                   <div className="grid gap-1">
                     <p className="text-sm font-medium">{`${grocery.productName} ${grocery.brand}`}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Expired on{' '}
+                      Expired on
                       {format(grocery.expirationDate, 'EEEE, dd MMMM yy')}
                     </p>
                   </div>
